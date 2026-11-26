@@ -1,12 +1,19 @@
 {
-  "name": "product-catalog",
+  "name": "express-mongodb-product-management",
   "version": "1.0.0",
-  "description": "Express API with a client-rendered product catalog",
+  "description": "Beginner-friendly Express RESTful CRUD API with MongoDB and Mongoose",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=20"
   },
   "dependencies": {
-    "express": "^5.1.0"
+    "dotenv": "^16.4.7",
+    "express": "^5.1.0",
+    "mongoose": "^8.9.5"
   }
 }

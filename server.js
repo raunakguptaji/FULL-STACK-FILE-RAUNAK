@@ -1,50 +1,33 @@
+require("dotenv").config();
+
 const express = require("express");
 const path = require("path");
+const connectDB = require("./config/db");
+const productRoutes = require("./routes/productRoutes");
+const { notFound, errorMiddleware } = require("./middleware/errorMiddleware");
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = Number(process.env.PORT) || 3001;
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
 
-let products = [
-  { id: 1, name: "Notebook", price: 4.99, rating: 4.5 },
-  { id: 2, name: "Desk Lamp", price: 24.5, rating: 4.2 },
-  { id: 3, name: "Water Bottle", price: 12, rating: 4.8 }
-];
-
-let nextId = 4;
-
-app.get("/api/products", (req, res) => {
-  res.json(products);
+app.get("/api/health", (req, res) => {
+  res.json({ status: "ok", database: "connected" });
 });
 
-app.post("/api/products", (req, res) => {
-  const body = req.body || {};
-  const name = typeof body.name === "string" ? body.name.trim() : "";
-  const price = body.price;
-  const rating = body.rating;
+app.use("/api/products", productRoutes);
+app.use(notFound);
+app.use(errorMiddleware);
 
-  if (
-    !name ||
-    typeof price !== "number" ||
-    !Number.isFinite(price) ||
-    price < 0 ||
-    typeof rating !== "number" ||
-    !Number.isFinite(rating) ||
-    rating < 0 ||
-    rating > 5
-  ) {
-    return res.status(400).json({
-      message: "Enter a product name, a price of 0 or more, and a rating from 0 to 5."
-    });
-  }
+async function startServer() {
+  await connectDB();
+  app.listen(PORT, () => {
+    console.log(`Product Management is running at http://localhost:${PORT}`);
+  });
+}
 
-  const product = { id: nextId++, name, price, rating };
-  products.push(product);
-  res.status(201).json(product);
-});
-
-app.listen(PORT, () => {
-  console.log(`Product Catalog is running at http://localhost:${PORT}`);
+startServer().catch((error) => {
+  console.error(`Server could not start: ${error.message}`);
+  process.exit(1);
 });
