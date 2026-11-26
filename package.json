@@ -1,10 +1,10 @@
 {
-  "name": "student-directory",
+  "name": "product-management",
   "version": "1.0.0",
-  "description": "A simple Express student directory",
-  "main": "app.js",
+  "description": "A simple Express product management app",
+  "main": "server.js",
   "scripts": {
-    "start": "node app.js"
+    "start": "node server.js"
   },
   "dependencies": {
     "express": "^5.1.0"
