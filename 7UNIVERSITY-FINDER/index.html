@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>University Finder</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <main class="page">
+        <header class="page-header">
+            <p class="eyebrow">UNIVERSITY FINDER</p>
+            <h1>Find a university</h1>
+            <p>Enter a country to explore universities, their websites and locations.</p>
+        </header>
+
+        <form id="search-form" class="search-form">
+            <label for="country-input">Country</label>
+            <div class="search-row">
+                <input
+                    id="country-input"
+                    type="text"
+                    placeholder="For example, India"
+                    autocomplete="country-name"
+                    required
+                >
+                <button id="search-button" type="submit">Search</button>
+            </div>
+        </form>
+
+        <p id="status" class="status" aria-live="polite">Enter a country name to get started.</p>
+        <section id="results" class="results" aria-label="University results"></section>
+
+        <footer>
+            Country data: <a href="https://datahelpdesk.worldbank.org/knowledgebase/articles/898590-country-api-queries" target="_blank" rel="noopener noreferrer">World Bank</a>
+            · University data: <a href="https://openalex.org/" target="_blank" rel="noopener noreferrer">OpenAlex</a>
+        </footer>
+    </main>
+</body>
+</html>
