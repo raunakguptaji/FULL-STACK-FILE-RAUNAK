@@ -1,72 +1,50 @@
-
-const express = require('express');
-const path = require('path');
+const express = require("express");
+const path = require("path");
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(express.static(__dirname));
+app.use(express.static(path.join(__dirname, "public")));
 
 let products = [
-    {
-        id: 1,
-        name: "Laptop",
-        price: 55000,
-        description: "High performance laptop"
-    },
-    {
-        id: 2,
-        name: "Mouse",
-        price: 800,
-        description: "Wireless mouse"
-    }
+  { id: 1, name: "Notebook", price: 4.99, rating: 4.5 },
+  { id: 2, name: "Desk Lamp", price: 24.5, rating: 4.2 },
+  { id: 3, name: "Water Bottle", price: 12, rating: 4.8 }
 ];
 
-// READ
-app.get('/products', (req, res) => {
-    res.json(products);
+let nextId = 4;
+
+app.get("/api/products", (req, res) => {
+  res.json(products);
 });
 
-// CREATE
-app.post('/products', (req, res) => {
-    const product = {
-        id: Date.now(),
-        name: req.body.name,
-        price: Number(req.body.price),
-        description: req.body.description
-    };
+app.post("/api/products", (req, res) => {
+  const body = req.body || {};
+  const name = typeof body.name === "string" ? body.name.trim() : "";
+  const price = body.price;
+  const rating = body.rating;
 
-    products.push(product);
-    res.json({ message: "Product added successfully" });
+  if (
+    !name ||
+    typeof price !== "number" ||
+    !Number.isFinite(price) ||
+    price < 0 ||
+    typeof rating !== "number" ||
+    !Number.isFinite(rating) ||
+    rating < 0 ||
+    rating > 5
+  ) {
+    return res.status(400).json({
+      message: "Enter a product name, a price of 0 or more, and a rating from 0 to 5."
+    });
+  }
+
+  const product = { id: nextId++, name, price, rating };
+  products.push(product);
+  res.status(201).json(product);
 });
 
-// UPDATE
-app.put('/products/:id', (req, res) => {
-    const id = Number(req.params.id);
-    const product = products.find(p => p.id === id);
-
-    if (!product) {
-        return res.status(404).json({ message: "Product not found" });
-    }
-
-    product.name = req.body.name;
-    product.price = Number(req.body.price);
-    product.description = req.body.description;
-
-    res.json({ message: "Product updated successfully" });
-});
-
-// DELETE
-app.delete('/products/:id', (req, res) => {
-    const id = Number(req.params.id);
-    products = products.filter(p => p.id !== id);
-
-    res.json({ message: "Product deleted successfully" });
-});
-
-// Start server
 app.listen(PORT, () => {
-    console.log(`Server running at http://localhost:${PORT}`);
+  console.log(`Product Catalog is running at http://localhost:${PORT}`);
 });
