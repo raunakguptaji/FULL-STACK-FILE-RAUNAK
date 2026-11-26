@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Snakes &amp; Ladders</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>🐍 Snakes &amp; Ladders 🪜</h1>
+
+  <!-- Start screen -->
+  <div id="setup" class="overlay">
+    <div class="modal">
+      <h2>New Game</h2>
+      <label for="playerCount">Number of players</label>
+      <select id="playerCount">
+        <option value="1">1 (vs Computer)</option>
+        <option value="2" selected>2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+      </select>
+      <button id="startBtn" class="btn">Start Game</button>
+    </div>
+  </div>
+
+  <!-- Winner screen -->
+  <div id="winner" class="overlay hidden">
+    <div class="modal">
+      <h2 id="winnerText">🎉 Player 1 wins!</h2>
+      <button id="playAgainBtn" class="btn">Play Again</button>
+    </div>
+  </div>
+
+  <main class="game">
+    <div class="board-wrap">
+      <div id="board" class="board">
+        <svg id="overlay" viewBox="0 0 100 100" preserveAspectRatio="none"></svg>
+        <div id="tokens"></div>
+      </div>
+    </div>
+
+    <aside class="panel">
+      <div id="players" class="players"></div>
+
+      <div class="dice-area">
+        <div id="dice" class="dice">⚀</div>
+        <button id="rollBtn" class="btn">Roll Dice</button>
+      </div>
+
+      <p id="status" class="status">Press “Start Game”.</p>
+
+      <div class="log-title">Game log</div>
+      <ul id="log" class="log"></ul>
+
+      <button id="restartBtn" class="btn secondary">Restart</button>
+    </aside>
+  </main>
+
+  <script src="game.js"></script>
+</body>
+</html>
